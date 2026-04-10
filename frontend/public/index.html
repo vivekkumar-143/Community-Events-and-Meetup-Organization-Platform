@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Community Events Platform</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f4f7fb;
+      color: #222;
+    }
+
+    .navbar {
+      background: #0f172a;
+      color: white;
+      padding: 18px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar h2 {
+      font-size: 24px;
+    }
+
+    .navbar .nav-links a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+      font-size: 15px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #2563eb, #0ea5e9);
+      color: white;
+      padding: 60px 40px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 42px;
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      opacity: 0.95;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 30px auto;
+    }
+
+    .filters {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+    }
+
+    .filters input,
+    .filters select {
+      flex: 1;
+      min-width: 220px;
+      padding: 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      outline: none;
+    }
+
+    .event-form {
+      background: white;
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      margin-bottom: 30px;
+    }
+
+    .event-form h2 {
+      margin-bottom: 18px;
+      color: #0f172a;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+    }
+
+    .event-form input,
+    .event-form textarea,
+    .event-form select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      outline: none;
+    }
+
+    .event-form textarea {
+      grid-column: 1 / -1;
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .event-form button {
+      margin-top: 16px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .event-form button:hover {
+      background: #1d4ed8;
+    }
+
+    .section-title {
+      margin: 25px 0 18px;
+      font-size: 28px;
+      color: #0f172a;
+    }
+
+    .events-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .event-card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+      transition: transform 0.2s ease;
+    }
+
+    .event-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .badge {
+      display: inline-block;
+      background: #dbeafe;
+      color: #1d4ed8;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    .event-card h3 {
+      margin-bottom: 10px;
+      color: #111827;
+    }
+
+    .event-card p {
+      margin-bottom: 8px;
+      color: #4b5563;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .card-actions {
+      margin-top: 15px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .join-btn,
+    .delete-btn {
+      border: none;
+      padding: 10px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      color: white;
+      font-size: 14px;
+    }
+
+    .join-btn {
+      background: #16a34a;
+    }
+
+    .join-btn:hover {
+      background: #15803d;
+    }
+
+    .delete-btn {
+      background: #dc2626;
+    }
+
+    .delete-btn:hover {
+      background: #b91c1c;
+    }
+
+    .empty-state {
+      text-align: center;
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      color: #6b7280;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 30px;
+      }
+
+      .navbar {
+        padding: 15px 20px;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .container {
+        width: 94%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <h2>MeetSphere</h2>
+    <div class="nav-links">
+      <a href="#">Home</a>
+      <a href="#add-event">Add Event</a>
+      <a href="#events">Events</a>
+    </div>
+  </div>
+
+  <div class="hero">
+    <h1>Community Events Platform</h1>
+    <p>Discover, create, and join exciting events happening around you.</p>
+  </div>
+
+  <div class="container">
+
+    <div class="filters">
+      <input type="text" id="search" placeholder="Search by title or description" oninput="loadEvents()" />
+      <select id="filterCategory" onchange="loadEvents()">
+        <option value="">All Categories</option>
+        <option value="Sports">Sports</option>
+        <option value="Music">Music</option>
+        <option value="Education">Education</option>
+        <option value="Technology">Technology</option>
+        <option value="Community">Community</option>
+      </select>
+      <input type="text" id="filterLocation" placeholder="Filter by location" oninput="loadEvents()" />
+    </div>
+
+    <div class="event-form" id="add-event">
+      <h2>Create New Event</h2>
+      <div class="form-grid">
+        <input id="title" placeholder="Event Title" />
+        <select id="category">
+          <option value="">Select Category</option>
+          <option value="Sports">Sports</option>
+          <option value="Music">Music</option>
+          <option value="Education">Education</option>
+          <option value="Technology">Technology</option>
+          <option value="Community">Community</option>
+        </select>
+        <input id="location" placeholder="Location" />
+        <input id="date" type="date" />
+        <input id="time" type="time" />
+        <input id="organizer" placeholder="Organizer Name" />
+        <textarea id="description" placeholder="Event Description"></textarea>
+      </div>
+      <button onclick="addEvent()">Add Event</button>
+    </div>
+
+    <h2 class="section-title" id="events">Upcoming Events</h2>
+    <div id="eventsContainer" class="events-grid"></div>
+
+  </div>
+
+  <script>
+    const API_URL = "http://127.0.0.1:5000/events";
+
+    async function addEvent() {
+      const title = document.getElementById("title").value.trim();
+      const category = document.getElementById("category").value.trim();
+      const location = document.getElementById("location").value.trim();
+      const date = document.getElementById("date").value.trim();
+      const time = document.getElementById("time").value.trim();
+      const organizer = document.getElementById("organizer").value.trim();
+      const description = document.getElementById("description").value.trim();
+
+      if (!title || !category || !location || !date || !time || !organizer || !description) {
+        alert("Please fill all fields.");
+        return;
+      }
+
+      const eventData = {
+        title,
+        category,
+        location,
+        date,
+        time,
+        organizer,
+        description
+      };
+
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(eventData)
+      });
+
+      if (res.ok) {
+        document.getElementById("title").value = "";
+        document.getElementById("category").value = "";
+        document.getElementById("location").value = "";
+        document.getElementById("date").value = "";
+        document.getElementById("time").value = "";
+        document.getElementById("organizer").value = "";
+        document.getElementById("description").value = "";
+        loadEvents();
+      } else {
+        alert("Failed to add event.");
+      }
+    }
+
+    async function loadEvents() {
+      const search = document.getElementById("search").value.trim();
+      const category = document.getElementById("filterCategory").value.trim();
+      const location = document.getElementById("filterLocation").value.trim();
+
+      let url = API_URL + "?";
+      if (search) url += "search=" + encodeURIComponent(search) + "&";
+      if (category) url += "category=" + encodeURIComponent(category) + "&";
+      if (location) url += "location=" + encodeURIComponent(location) + "&";
+
+      const res = await fetch(url);
+      const data = await res.json();
+
+      const container = document.getElementById("eventsContainer");
+      container.innerHTML = "";
+
+      if (data.length === 0) {
+        container.innerHTML = `<div class="empty-state">No events found.</div>`;
+        return;
+      }
+
+      data.forEach(event => {
+        const card = document.createElement("div");
+        card.className = "event-card";
+        card.innerHTML = `
+          <span class="badge">${event.category}</span>
+          <h3>${event.title}</h3>
+          <p><strong>📍 Location:</strong> ${event.location}</p>
+          <p><strong>📅 Date:</strong> ${event.date}</p>
+          <p><strong>⏰ Time:</strong> ${event.time}</p>
+          <p><strong>👤 Organizer:</strong> ${event.organizer}</p>
+          <p><strong>👥 Participants:</strong> ${event.participants}</p>
+          <p>${event.description}</p>
+          <div class="card-actions">
+            <button class="join-btn" onclick="joinEvent(${event.id})">Join</button>
+            <button class="delete-btn" onclick="deleteEvent(${event.id})">Delete</button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    async function joinEvent(id) {
+      const res = await fetch(`http://127.0.0.1:5000/events/${id}/join`, {
+        method: "PUT"
+      });
+
+      if (res.ok) {
+        loadEvents();
+      } else {
+        alert("Failed to join event.");
+      }
+    }
+
+    async function deleteEvent(id) {
+      const res = await fetch(`http://127.0.0.1:5000/events/${id}`, {
+        method: "DELETE"
+      });
+
+      if (res.ok) {
+        loadEvents();
+      } else {
+        alert("Failed to delete event.");
+      }
+    }
+
+    loadEvents();
+  </script>
+
+</body>
+</html>
