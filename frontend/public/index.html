@@ -3,91 +3,234 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Community Events Platform</title>
+  <title>MeetSphere — Community Events Platform</title>
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
       font-family: Arial, sans-serif;
+      scroll-behavior: smooth;
     }
 
     body {
-      background: #f4f7fb;
-      color: #222;
+      background: #f5f9f7;
+      color: #17212b;
+      overflow-x: hidden;
     }
 
     .navbar {
-      background: #0f172a;
-      color: white;
-      padding: 18px 40px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(12px);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding: 16px 40px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+      animation: slideDown 0.7s ease;
     }
 
-    .navbar h2 {
-      font-size: 24px;
+    @keyframes slideDown {
+      from { transform: translateY(-50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
 
-    .navbar .nav-links a {
-      color: white;
+    .brand h2 {
+      font-size: 28px;
+      color: #0f172a;
+    }
+
+    .brand span {
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .nav-links a {
       text-decoration: none;
-      margin-left: 20px;
-      font-size: 15px;
+      color: #334155;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: #1c8f62;
     }
 
     .hero {
-      background: linear-gradient(135deg, #2563eb, #0ea5e9);
-      color: white;
-      padding: 60px 40px;
+      min-height: 88vh;
+      background:
+        linear-gradient(rgba(10,20,25,0.58), rgba(10,20,25,0.58)),
+        url("https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1500&q=80")
+        center/cover no-repeat;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       text-align: center;
+      padding: 40px 20px;
+      color: white;
+    }
+
+    .hero-content {
+      max-width: 900px;
+      animation: fadeUp 1s ease;
+    }
+
+    @keyframes fadeUp {
+      from { transform: translateY(40px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
 
     .hero h1 {
+      font-size: 68px;
+      line-height: 1.05;
+      margin-bottom: 18px;
+      font-weight: 800;
+    }
+
+    .hero p {
+      font-size: 22px;
+      color: #e5e7eb;
+      margin-bottom: 28px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: none;
+      padding: 14px 26px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 700;
+      transition: 0.3s ease;
+    }
+
+    .btn-primary {
+      background: #2fb67c;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      background: #249767;
+    }
+
+    .btn-secondary {
+      background: white;
+      color: #111827;
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+    }
+
+    .section {
+      width: 92%;
+      max-width: 1200px;
+      margin: 60px auto;
+    }
+
+    .section-title {
+      font-size: 34px;
+      margin-bottom: 24px;
+      text-align: center;
+      color: #111827;
+    }
+
+    .stats-grid,
+    .category-grid,
+    .events-grid,
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .stat-card,
+    .category-card,
+    .feature-card,
+    .event-card,
+    .form-card {
+      background: white;
+      border-radius: 22px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.07);
+      padding: 24px;
+      transition: 0.3s ease;
+    }
+
+    .stat-card:hover,
+    .category-card:hover,
+    .feature-card:hover,
+    .event-card:hover,
+    .form-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .stat-card h3 {
+      font-size: 38px;
+      color: #1c8f62;
+      margin-bottom: 8px;
+    }
+
+    .stat-card p {
+      color: #6b7280;
+      font-weight: 600;
+    }
+
+    .category-card {
+      text-align: center;
+    }
+
+    .category-icon {
       font-size: 42px;
       margin-bottom: 12px;
     }
 
-    .hero p {
-      font-size: 18px;
-      opacity: 0.95;
+    .category-card h3 {
+      margin-bottom: 8px;
     }
 
-    .container {
-      width: 90%;
-      max-width: 1200px;
-      margin: 30px auto;
+    .category-card p,
+    .feature-card p {
+      color: #6b7280;
+      line-height: 1.6;
     }
 
     .filters {
       display: flex;
-      gap: 10px;
-      margin-bottom: 25px;
+      gap: 12px;
       flex-wrap: wrap;
+      margin-bottom: 22px;
     }
 
     .filters input,
     .filters select {
       flex: 1;
       min-width: 220px;
-      padding: 12px;
+      padding: 14px 16px;
       border: 1px solid #d1d5db;
-      border-radius: 10px;
+      border-radius: 14px;
       outline: none;
-    }
-
-    .event-form {
       background: white;
-      padding: 25px;
-      border-radius: 16px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-      margin-bottom: 30px;
     }
 
-    .event-form h2 {
+    .form-card h3 {
       margin-bottom: 18px;
-      color: #0f172a;
+      color: #111827;
     }
 
     .form-grid {
@@ -96,98 +239,62 @@
       gap: 14px;
     }
 
-    .event-form input,
-    .event-form textarea,
-    .event-form select {
+    .form-grid input,
+    .form-grid select,
+    .form-grid textarea {
       width: 100%;
-      padding: 12px;
+      padding: 14px;
       border: 1px solid #d1d5db;
-      border-radius: 10px;
+      border-radius: 14px;
       outline: none;
+      background: #fbfbfb;
     }
 
-    .event-form textarea {
+    .form-grid textarea {
       grid-column: 1 / -1;
-      min-height: 100px;
+      min-height: 110px;
       resize: vertical;
-    }
-
-    .event-form button {
-      margin-top: 16px;
-      background: #2563eb;
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-
-    .event-form button:hover {
-      background: #1d4ed8;
-    }
-
-    .section-title {
-      margin: 25px 0 18px;
-      font-size: 28px;
-      color: #0f172a;
-    }
-
-    .events-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-    }
-
-    .event-card {
-      background: white;
-      border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-      transition: transform 0.2s ease;
-    }
-
-    .event-card:hover {
-      transform: translateY(-4px);
     }
 
     .badge {
       display: inline-block;
-      background: #dbeafe;
-      color: #1d4ed8;
-      padding: 6px 10px;
+      background: #dcfce7;
+      color: #15803d;
+      padding: 6px 12px;
       border-radius: 999px;
       font-size: 12px;
-      margin-bottom: 10px;
-      font-weight: bold;
+      font-weight: 700;
+      margin-bottom: 12px;
     }
 
     .event-card h3 {
       margin-bottom: 10px;
-      color: #111827;
+      color: #0f172a;
     }
 
     .event-card p {
+      color: #475569;
       margin-bottom: 8px;
-      color: #4b5563;
-      font-size: 14px;
       line-height: 1.5;
+      font-size: 14px;
     }
 
     .card-actions {
-      margin-top: 15px;
+      margin-top: 14px;
       display: flex;
       gap: 10px;
+      flex-wrap: wrap;
     }
 
     .join-btn,
     .delete-btn {
       border: none;
       padding: 10px 14px;
-      border-radius: 8px;
+      border-radius: 10px;
       cursor: pointer;
       color: white;
-      font-size: 14px;
+      font-weight: 700;
+      transition: 0.3s ease;
     }
 
     .join-btn {
@@ -207,27 +314,193 @@
     }
 
     .empty-state {
-      text-align: center;
       background: white;
       padding: 30px;
-      border-radius: 16px;
+      border-radius: 20px;
+      text-align: center;
       color: #6b7280;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      padding: 20px;
+    }
+
+    .overlay.show {
+      display: flex;
+    }
+
+    .modal {
+      width: 100%;
+      max-width: 720px;
+      background: white;
+      border-radius: 34px;
+      padding: 38px 34px 28px;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.25);
+      position: relative;
+      animation: fadeUp 0.25s ease;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      background: transparent;
+      border: none;
+      font-size: 32px;
+      cursor: pointer;
+      color: #475569;
+    }
+
+    .modal h2 {
+      font-size: 30px;
+      margin-bottom: 8px;
+    }
+
+    .modal-subtitle {
+      color: #6b7280;
+      margin-bottom: 20px;
+      font-size: 16px;
+    }
+
+    .input-box {
+      width: 100%;
+      padding: 18px 18px;
+      border: 2px solid #d1d5db;
+      border-radius: 22px;
+      font-size: 18px;
+      margin-bottom: 16px;
+      outline: none;
+    }
+
+    .role-label {
+      margin-bottom: 10px;
+      display: block;
+      color: #374151;
+      font-size: 17px;
+    }
+
+    .role-switch {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .role-btn {
+      flex: 1;
+      padding: 16px;
+      border-radius: 20px;
+      border: 2px solid #d1d5db;
+      background: white;
+      font-size: 18px;
+      cursor: pointer;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    .role-btn.active {
+      background: #2fb67c;
+      color: white;
+      border-color: #2fb67c;
+    }
+
+    .submit-btn {
+      width: 100%;
+      background: #2fb67c;
+      color: white;
+      border: none;
+      padding: 16px;
+      border-radius: 22px;
+      font-size: 20px;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
+    .submit-btn:hover {
+      background: #249767;
+    }
+
+    .divider {
+      text-align: center;
+      color: #9ca3af;
+      margin: 20px 0;
+      font-size: 18px;
+    }
+
+    .google-btn {
+      width: 100%;
+      padding: 16px;
+      border-radius: 22px;
+      border: 2px solid #d1d5db;
+      background: white;
+      cursor: pointer;
+      font-size: 18px;
+      color: #374151;
+      font-weight: 600;
+    }
+
+    .switch-text {
+      text-align: center;
+      margin-top: 20px;
+      color: #6b7280;
+      font-size: 16px;
+    }
+
+    .switch-link {
+      color: #2fb67c;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .message-box {
+      margin-top: 14px;
+      text-align: center;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .message-success { color: #15803d; }
+    .message-error { color: #dc2626; }
+    .hidden { display: none; }
+
+    footer {
+      background: #0f172a;
+      color: #d1d5db;
+      text-align: center;
+      padding: 28px 20px;
+      margin-top: 60px;
     }
 
     @media (max-width: 768px) {
       .hero h1 {
-        font-size: 30px;
+        font-size: 42px;
       }
 
       .navbar {
-        padding: 15px 20px;
+        padding: 14px 18px;
         flex-direction: column;
         gap: 10px;
       }
 
-      .container {
-        width: 94%;
+      .nav-links {
+        gap: 14px;
+      }
+
+      .role-switch {
+        flex-direction: column;
+      }
+
+      .modal {
+        padding: 28px 18px 24px;
+        border-radius: 22px;
       }
     }
   </style>
@@ -235,20 +508,116 @@
 <body>
 
   <div class="navbar">
-    <h2>MeetSphere</h2>
-    <div class="nav-links">
-      <a href="#">Home</a>
-      <a href="#add-event">Add Event</a>
+    <div class="brand">
+      <h2>MeetSphere</h2>
+      <span>Community Events</span>
+    </div>
+    <div class="nav-links" id="navbarLinks">
+      <a href="#categories">Categories</a>
       <a href="#events">Events</a>
+      <a href="#create">Create</a>
+      <a href="#" onclick="openModal()">Join</a>
     </div>
   </div>
 
-  <div class="hero">
-    <h1>Community Events Platform</h1>
-    <p>Discover, create, and join exciting events happening around you.</p>
-  </div>
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Discover. Organize. Connect.</h1>
+      <p>Find, create, and join community meetups, workshops, tournaments, trips, and festivals — all in one place.</p>
+      <div class="hero-buttons">
+        <button class="btn btn-primary" onclick="openModal()">Join MeetSphere</button>
+        <button class="btn btn-secondary" onclick="scrollToEvents()">Explore Events</button>
+      </div>
+    </div>
+  </section>
 
-  <div class="container">
+  <section class="section">
+    <h2 class="section-title">Platform Highlights</h2>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3 id="statEvents">0</h3>
+        <p>Total Events</p>
+      </div>
+      <div class="stat-card">
+        <h3 id="statUsers">0</h3>
+        <p>Registered Users</p>
+      </div>
+      <div class="stat-card">
+        <h3 id="statOrganizers">0</h3>
+        <p>Organizers</p>
+      </div>
+      <div class="stat-card">
+        <h3 id="statParticipants">0</h3>
+        <p>Participants</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="categories">
+    <h2 class="section-title">Browse by Category</h2>
+    <div class="category-grid">
+      <div class="category-card"><div class="category-icon">⚽</div><h3>Sports</h3><p>Tournaments, marathons, fitness meetups and more.</p></div>
+      <div class="category-card"><div class="category-icon">🎵</div><h3>Music</h3><p>Live sessions, jam rooms, community performances.</p></div>
+      <div class="category-card"><div class="category-icon">💻</div><h3>Technology</h3><p>Hackathons, coding meetups, workshops, innovation clubs.</p></div>
+      <div class="category-card"><div class="category-icon">📚</div><h3>Education</h3><p>Seminars, book clubs, public speaking and learning groups.</p></div>
+      <div class="category-card"><div class="category-icon">🤝</div><h3>Community</h3><p>Social causes, awareness events and local engagement.</p></div>
+      <div class="category-card"><div class="category-icon">🧳</div><h3>Trips</h3><p>Group trips, adventure tours and city experiences.</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Why MeetSphere?</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h3>Centralized Discovery</h3>
+        <p>No more searching through multiple groups and scattered messages. Everything is in one place.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Simple Organization</h3>
+        <p>Organizers can create events, manage participants, and share details quickly.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Email Notifications</h3>
+        <p>Users get updates when they sign up, create an event, or join an event.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Professional Experience</h3>
+        <p>Modern UI, responsive layout, and event cards that look like a real startup platform.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="create">
+    <div class="form-card">
+      <h3>Create New Event</h3>
+      <div class="form-grid">
+        <input id="title" placeholder="Event Title" />
+        <select id="category">
+          <option value="">Select Category</option>
+          <option value="Sports">Sports</option>
+          <option value="Music">Music</option>
+          <option value="Technology">Technology</option>
+          <option value="Education">Education</option>
+          <option value="Community">Community</option>
+          <option value="Trips">Trips</option>
+        </select>
+        <input id="location" placeholder="Location" />
+        <input id="date" type="date" />
+        <input id="time" type="time" />
+        <input id="organizer" placeholder="Organizer Name" />
+        <input id="organizerEmail" placeholder="Organizer Email" />
+        <select id="featured">
+          <option value="false">Normal Event</option>
+          <option value="true">Featured Event</option>
+        </select>
+        <textarea id="description" placeholder="Event Description"></textarea>
+      </div>
+      <button class="btn btn-primary" style="margin-top:16px;" onclick="addEvent()">Add Event</button>
+    </div>
+  </section>
+
+  <section class="section" id="events">
+    <h2 class="section-title">Upcoming Events</h2>
 
     <div class="filters">
       <input type="text" id="search" placeholder="Search by title or description" oninput="loadEvents()" />
@@ -256,53 +625,235 @@
         <option value="">All Categories</option>
         <option value="Sports">Sports</option>
         <option value="Music">Music</option>
-        <option value="Education">Education</option>
         <option value="Technology">Technology</option>
+        <option value="Education">Education</option>
         <option value="Community">Community</option>
+        <option value="Trips">Trips</option>
       </select>
       <input type="text" id="filterLocation" placeholder="Filter by location" oninput="loadEvents()" />
     </div>
 
-    <div class="event-form" id="add-event">
-      <h2>Create New Event</h2>
-      <div class="form-grid">
-        <input id="title" placeholder="Event Title" />
-        <select id="category">
-          <option value="">Select Category</option>
-          <option value="Sports">Sports</option>
-          <option value="Music">Music</option>
-          <option value="Education">Education</option>
-          <option value="Technology">Technology</option>
-          <option value="Community">Community</option>
-        </select>
-        <input id="location" placeholder="Location" />
-        <input id="date" type="date" />
-        <input id="time" type="time" />
-        <input id="organizer" placeholder="Organizer Name" />
-        <textarea id="description" placeholder="Event Description"></textarea>
-      </div>
-      <button onclick="addEvent()">Add Event</button>
-    </div>
-
-    <h2 class="section-title" id="events">Upcoming Events</h2>
     <div id="eventsContainer" class="events-grid"></div>
+  </section>
 
+  <div class="overlay" id="authOverlay">
+    <div class="modal">
+      <button class="close-btn" onclick="closeModal()">×</button>
+
+      <div id="signupView">
+        <h2>Join MeetSphere</h2>
+        <p class="modal-subtitle">Create your account to organize and discover events</p>
+
+        <input type="text" id="fullName" class="input-box" placeholder="Full Name" />
+
+        <label class="role-label">I want to be a:</label>
+        <div class="role-switch">
+          <button class="role-btn active" id="participantBtn" onclick="setRole('Participant')">Participant</button>
+          <button class="role-btn" id="organizerBtn" onclick="setRole('Organizer')">Organizer</button>
+        </div>
+
+        <input type="email" id="signupEmail" class="input-box" placeholder="Email" />
+        <input type="password" id="signupPassword" class="input-box" placeholder="Password" />
+
+        <button class="submit-btn" onclick="signupUser()">Create Account</button>
+
+        <div class="divider">or</div>
+        <button class="google-btn">Sign in with Google</button>
+
+        <p class="switch-text">
+          Already have an account?
+          <span class="switch-link" onclick="showLogin()">Sign In</span>
+        </p>
+
+        <div id="signupMessage" class="message-box"></div>
+      </div>
+
+      <div id="loginView" class="hidden">
+        <h2>Welcome Back</h2>
+        <p class="modal-subtitle">Sign in to continue exploring community events</p>
+
+        <input type="email" id="loginEmail" class="input-box" placeholder="Email" />
+        <input type="password" id="loginPassword" class="input-box" placeholder="Password" />
+
+        <button class="submit-btn" onclick="loginUser()">Sign In</button>
+
+        <div class="divider">or</div>
+        <button class="google-btn">Sign in with Google</button>
+
+        <p class="switch-text">
+          Don’t have an account?
+          <span class="switch-link" onclick="showSignup()">Create Account</span>
+        </p>
+
+        <div id="loginMessage" class="message-box"></div>
+      </div>
+    </div>
   </div>
 
+  <footer>
+    <p>© 2026 MeetSphere. Built for smarter community engagement.</p>
+  </footer>
+
   <script>
-    const API_URL = "http://127.0.0.1:5000/events";
+    const API_BASE = "http://127.0.0.1:5000";
+    let selectedRole = "Participant";
+
+    function scrollToEvents() {
+      document.getElementById("events").scrollIntoView({ behavior: "smooth" });
+    }
+
+    function openModal() {
+      document.getElementById("authOverlay").classList.add("show");
+    }
+
+    function closeModal() {
+      document.getElementById("authOverlay").classList.remove("show");
+      clearMessages();
+    }
+
+    function setRole(role) {
+      selectedRole = role;
+      document.getElementById("participantBtn").classList.remove("active");
+      document.getElementById("organizerBtn").classList.remove("active");
+      if (role === "Participant") {
+        document.getElementById("participantBtn").classList.add("active");
+      } else {
+        document.getElementById("organizerBtn").classList.add("active");
+      }
+    }
+
+    function showLogin() {
+      document.getElementById("signupView").classList.add("hidden");
+      document.getElementById("loginView").classList.remove("hidden");
+      clearMessages();
+    }
+
+    function showSignup() {
+      document.getElementById("loginView").classList.add("hidden");
+      document.getElementById("signupView").classList.remove("hidden");
+      clearMessages();
+    }
+
+    function clearMessages() {
+      document.getElementById("signupMessage").innerHTML = "";
+      document.getElementById("loginMessage").innerHTML = "";
+    }
+
+    function showMessage(id, msg, ok) {
+      const el = document.getElementById(id);
+      el.innerHTML = msg;
+      el.className = ok ? "message-box message-success" : "message-box message-error";
+    }
+
+    async function signupUser() {
+      clearMessages();
+
+      const full_name = document.getElementById("fullName").value.trim();
+      const email = document.getElementById("signupEmail").value.trim();
+      const password = document.getElementById("signupPassword").value.trim();
+
+      if (!full_name || !email || !password) {
+        showMessage("signupMessage", "Please fill all fields.", false);
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/signup`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            full_name,
+            role: selectedRole,
+            email,
+            password
+          })
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          showMessage("signupMessage", data.message, true);
+          setTimeout(() => showLogin(), 1000);
+        } else {
+          showMessage("signupMessage", data.message || "Signup failed.", false);
+        }
+      } catch {
+        showMessage("signupMessage", "Server connection failed.", false);
+      }
+    }
+
+    async function loginUser() {
+      clearMessages();
+
+      const email = document.getElementById("loginEmail").value.trim();
+      const password = document.getElementById("loginPassword").value.trim();
+
+      if (!email || !password) {
+        showMessage("loginMessage", "Please enter email and password.", false);
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          localStorage.setItem("loggedInUser", JSON.stringify(data.user));
+          showMessage("loginMessage", `Welcome, ${data.user.full_name}`, true);
+          setTimeout(() => {
+            closeModal();
+            updateNavbarUser(data.user);
+          }, 900);
+        } else {
+          showMessage("loginMessage", data.message || "Login failed.", false);
+        }
+      } catch {
+        showMessage("loginMessage", "Server connection failed.", false);
+      }
+    }
+
+    function updateNavbarUser(user) {
+      document.getElementById("navbarLinks").innerHTML = `
+        <a href="#categories">Categories</a>
+        <a href="#events">Events</a>
+        <a href="#create">Create</a>
+        <a href="#">${user.full_name}</a>
+      `;
+    }
+
+    async function loadStats() {
+      try {
+        const res = await fetch(`${API_BASE}/stats`);
+        const data = await res.json();
+        document.getElementById("statEvents").innerText = data.total_events;
+        document.getElementById("statUsers").innerText = data.total_users;
+        document.getElementById("statOrganizers").innerText = data.total_organizers;
+        document.getElementById("statParticipants").innerText = data.total_participants;
+      } catch (e) {
+        console.log("Stats error", e);
+      }
+    }
 
     async function addEvent() {
+      const loggedUser = JSON.parse(localStorage.getItem("loggedInUser") || "null");
+
       const title = document.getElementById("title").value.trim();
       const category = document.getElementById("category").value.trim();
       const location = document.getElementById("location").value.trim();
       const date = document.getElementById("date").value.trim();
       const time = document.getElementById("time").value.trim();
       const organizer = document.getElementById("organizer").value.trim();
+      const organizerEmail = document.getElementById("organizerEmail").value.trim();
       const description = document.getElementById("description").value.trim();
+      const featured = document.getElementById("featured").value === "true";
 
       if (!title || !category || !location || !date || !time || !organizer || !description) {
-        alert("Please fill all fields.");
+        alert("Please fill all required fields.");
         return;
       }
 
@@ -313,14 +864,14 @@
         date,
         time,
         organizer,
-        description
+        organizer_email: organizerEmail || (loggedUser ? loggedUser.email : ""),
+        description,
+        featured
       };
 
-      const res = await fetch(API_URL, {
+      const res = await fetch(`${API_BASE}/events`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(eventData)
       });
 
@@ -331,8 +882,12 @@
         document.getElementById("date").value = "";
         document.getElementById("time").value = "";
         document.getElementById("organizer").value = "";
+        document.getElementById("organizerEmail").value = "";
         document.getElementById("description").value = "";
+        document.getElementById("featured").value = "false";
         loadEvents();
+        loadStats();
+        alert("Event created successfully.");
       } else {
         alert("Failed to add event.");
       }
@@ -343,10 +898,10 @@
       const category = document.getElementById("filterCategory").value.trim();
       const location = document.getElementById("filterLocation").value.trim();
 
-      let url = API_URL + "?";
-      if (search) url += "search=" + encodeURIComponent(search) + "&";
-      if (category) url += "category=" + encodeURIComponent(category) + "&";
-      if (location) url += "location=" + encodeURIComponent(location) + "&";
+      let url = `${API_BASE}/events?`;
+      if (search) url += `search=${encodeURIComponent(search)}&`;
+      if (category) url += `category=${encodeURIComponent(category)}&`;
+      if (location) url += `location=${encodeURIComponent(location)}&`;
 
       const res = await fetch(url);
       const data = await res.json();
@@ -363,7 +918,7 @@
         const card = document.createElement("div");
         card.className = "event-card";
         card.innerHTML = `
-          <span class="badge">${event.category}</span>
+          <span class="badge">${event.category}${event.featured ? " • Featured" : ""}</span>
           <h3>${event.title}</h3>
           <p><strong>📍 Location:</strong> ${event.location}</p>
           <p><strong>📅 Date:</strong> ${event.date}</p>
@@ -381,31 +936,48 @@
     }
 
     async function joinEvent(id) {
-      const res = await fetch(`http://127.0.0.1:5000/events/${id}/join`, {
-        method: "PUT"
+      const loggedUser = JSON.parse(localStorage.getItem("loggedInUser") || "null");
+
+      const payload = loggedUser ? {
+        email: loggedUser.email,
+        full_name: loggedUser.full_name
+      } : {};
+
+      const res = await fetch(`${API_BASE}/events/${id}/join`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
       });
 
       if (res.ok) {
         loadEvents();
+        alert("Joined event successfully.");
       } else {
         alert("Failed to join event.");
       }
     }
 
     async function deleteEvent(id) {
-      const res = await fetch(`http://127.0.0.1:5000/events/${id}`, {
+      const res = await fetch(`${API_BASE}/events/${id}`, {
         method: "DELETE"
       });
 
       if (res.ok) {
         loadEvents();
+        loadStats();
       } else {
         alert("Failed to delete event.");
       }
     }
 
-    loadEvents();
+    window.onload = function () {
+      const storedUser = localStorage.getItem("loggedInUser");
+      if (storedUser) {
+        updateNavbarUser(JSON.parse(storedUser));
+      }
+      loadStats();
+      loadEvents();
+    };
   </script>
-
 </body>
 </html>
